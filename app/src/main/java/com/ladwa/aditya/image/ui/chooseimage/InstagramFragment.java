@@ -15,7 +15,7 @@ import com.ladwa.aditya.image.R;
 
 public class InstagramFragment extends Fragment {
 
-    public static Fragment newInstant() {
+    public static Fragment newInstance() {
         return new InstagramFragment();
     }
 

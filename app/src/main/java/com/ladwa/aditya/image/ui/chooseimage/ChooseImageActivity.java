@@ -61,11 +61,11 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
     }
 
 
-    public class ChooseImagePagerAdapter extends FragmentPagerAdapter {
+    private class ChooseImagePagerAdapter extends FragmentPagerAdapter {
         private final Integer TOTAL_TABS = 3;
 
 
-        public ChooseImagePagerAdapter(FragmentManager fm) {
+        ChooseImagePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -73,11 +73,11 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return AlbumFragment.newInstant();
+                    return AlbumFragment.newInstance();
                 case 1:
-                    return InstagramFragment.newInstant();
+                    return InstagramFragment.newInstance();
                 case 2:
-                    return FacebookFragment.newInstant();
+                    return FacebookFragment.newInstance();
             }
             return null;
         }
