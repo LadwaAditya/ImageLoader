@@ -190,7 +190,7 @@ dependencies {
     testAnnotationProcessor daggerCompiler
     androidTestAnnotationProcessor daggerCompiler
 
-
+    //RxPermission for easy runtime permission management
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
 
     compile 'com.github.bumptech.glide:glide:3.7.0'

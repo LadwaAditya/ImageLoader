@@ -1,21 +1,29 @@
 package com.ladwa.aditya.image.ui.chooseimage;
 
+import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ladwa.aditya.image.R;
+import com.ladwa.aditya.image.data.model.Bucket;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
@@ -24,11 +32,15 @@ import timber.log.Timber;
 
 public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
 
+    @BindView(R.id.album_recycler_view) RecyclerView albumRecyclerView;
+    @BindView(R.id.textView) TextView textView;
     private MediaLoader mMediaLoader;
     public static final String IMAGE_TYPE_BMP = "image/bmp";
     public static final String IMAGE_TYPE_JPEG = "image/jpeg";
     public static final String IMAGE_TYPE_PNG = "image/png";
     public static final String[] IMAGE_TYPES = {IMAGE_TYPE_BMP, IMAGE_TYPE_JPEG, IMAGE_TYPE_PNG};
+    private ArrayList<Bucket> bucketArrayList;
+    private AlbumBucketAdapter albumBucketAdapter;
 
     public static Fragment newInstance() {
         return new AlbumFragment();
@@ -53,16 +65,18 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
 
 
         RxPermissions rxPermissions = new RxPermissions(getActivity());
-        rxPermissions.request(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
                         Timber.d("Permission Granted");
+
                         mMediaLoader.loadBuckets();
                     } else {
                         Timber.d("Please grant permission");
                         Toast.makeText(getActivity(), "We need external storage permission", Toast.LENGTH_SHORT).show();
                     }
                 });
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -72,46 +86,32 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
         mMediaLoader.onDetach();
     }
 
-    private void getAlbums() {
-        final String BUCKET_SELECTION = "1) GROUP BY (1";
-        final String BUCKET_SORT_ORDER = "MAX(" + MediaStore.Images.Media.DATE_TAKEN + ") DESC";
-        final String[] BUCKET_PROJECTION = {
-                MediaStore.Images.ImageColumns.BUCKET_ID,
-                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.ImageColumns.DATA
-        };
-
-        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = getActivity().getContentResolver().query(uri, BUCKET_PROJECTION,
-                null,
-                null,
-                null
-        );
-
-        if (cursor != null) {
-            Timber.d(String.valueOf(cursor.getCount()));
-            while (cursor.moveToNext()) {
-                Timber.d("Cursor");
-            }
-
-            if (!cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-    }
 
     @Override
     public void onBucketLoadFinished(@Nullable Cursor data) {
         if (data != null) {
+            bucketArrayList = new ArrayList<>();
             while (data.moveToNext()) {
+                Bucket b = new Bucket();
                 String albumName = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
+                String id = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID));
 
+                b.setAlbumName(albumName);
+                b.setTotalPhoto(photoCountByAlbum(albumName));
+                b.setId(id);
+
+                bucketArrayList.add(b);
                 Timber.d(albumName);
                 Timber.d(String.valueOf(photoCountByAlbum(albumName)));
             }
-
+            setUpAdapter(bucketArrayList);
         }
+    }
+
+    private void setUpAdapter(ArrayList<Bucket> bucketArrayList) {
+        albumRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        albumBucketAdapter = new AlbumBucketAdapter(bucketArrayList);
+        albumRecyclerView.setAdapter(albumBucketAdapter);
     }
 
     @Override
@@ -141,5 +141,6 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
         }
         return 0;
     }
+
 
 }
