@@ -95,14 +95,15 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
                 Bucket b = new Bucket();
                 String albumName = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
                 String id = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID));
-
+                String dataStr = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
                 b.setAlbumName(albumName);
                 b.setTotalPhoto(photoCountByAlbum(albumName));
                 b.setId(id);
-
+                b.setThumbnailUri(dataStr);
                 bucketArrayList.add(b);
                 Timber.d(albumName);
                 Timber.d(String.valueOf(photoCountByAlbum(albumName)));
+                Timber.d(dataStr);
             }
             setUpAdapter(bucketArrayList);
         }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.ladwa.aditya.image.R;
 import com.ladwa.aditya.image.data.model.Bucket;
 
@@ -51,8 +52,12 @@ public class AlbumBucketAdapter extends RecyclerView.Adapter<AlbumBucketAdapter.
 
         private void setBucket(Bucket bucket) {
             this.txtAlbumName.setText(bucket.getAlbumName());
-            this.txtTotalPhoto.setText(String.format(this.itemView.getContext().getString(R.string.total_photo_format),bucket.getTotalPhoto()));
-
+            this.txtTotalPhoto.setText(String.format(this.itemView.getContext().getString(R.string.total_photo_format), bucket.getTotalPhoto()));
+            Glide.with(this.itemView.getContext())
+                    .load(bucket.getThumbnailUri())
+                    .centerCrop()
+                    .placeholder(R.color.accent)
+                    .into(this.imgThumbnail);
         }
 
         public AlbumViewHolder(View itemView) {
