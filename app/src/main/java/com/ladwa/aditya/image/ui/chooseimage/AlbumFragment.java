@@ -101,9 +101,9 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
                 b.setId(id);
                 b.setThumbnailUri(dataStr);
                 bucketArrayList.add(b);
-                Timber.d(albumName);
-                Timber.d(String.valueOf(photoCountByAlbum(albumName)));
-                Timber.d(dataStr);
+//                Timber.d(albumName);
+//                Timber.d(String.valueOf(photoCountByAlbum(albumName)));
+//                Timber.d(dataStr);
             }
             setUpAdapter(bucketArrayList);
         }
