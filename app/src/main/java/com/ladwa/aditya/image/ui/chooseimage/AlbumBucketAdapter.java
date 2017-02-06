@@ -24,11 +24,11 @@ public class AlbumBucketAdapter extends RecyclerView.Adapter<AlbumBucketAdapter.
 
 
     private ArrayList<Bucket> bucketArrayList;
-    private AlbumClickListner albumClickListner;
+    private AlbumClickListener albumClickListener;
 
-    public AlbumBucketAdapter(ArrayList<Bucket> bucketArrayList, AlbumClickListner albumClickListner) {
+    public AlbumBucketAdapter(ArrayList<Bucket> bucketArrayList, AlbumClickListener albumClickListener) {
         this.bucketArrayList = bucketArrayList;
-        this.albumClickListner = albumClickListner;
+        this.albumClickListener = albumClickListener;
     }
 
     @Override
@@ -77,13 +77,11 @@ public class AlbumBucketAdapter extends RecyclerView.Adapter<AlbumBucketAdapter.
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION)
-                albumClickListner.onClick(bucketArrayList.get(getAdapterPosition()));
+                albumClickListener.onClick(bucketArrayList.get(getAdapterPosition()));
         }
     }
 
-    interface AlbumClickListner {
+    interface AlbumClickListener {
         void onClick(Bucket bucket);
     }
-
-
 }

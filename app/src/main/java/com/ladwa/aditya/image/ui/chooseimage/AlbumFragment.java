@@ -30,7 +30,7 @@ import timber.log.Timber;
  * Created by aditya on 3/2/17.
  */
 
-public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, AlbumBucketAdapter.AlbumClickListner {
+public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, AlbumBucketAdapter.AlbumClickListener {
 
     @BindView(R.id.album_recycler_view)
     RecyclerView albumRecyclerView;
