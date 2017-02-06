@@ -145,7 +145,7 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
 
 
     @Override
-    public void onClick(Bucket bucket) {
+    public void onClickBucket(Bucket bucket) {
         mMediaLoader.loadByBucket(bucket.getId());
     }
 }

@@ -77,11 +77,11 @@ public class AlbumBucketAdapter extends RecyclerView.Adapter<AlbumBucketAdapter.
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION)
-                albumClickListener.onClick(bucketArrayList.get(getAdapterPosition()));
+                albumClickListener.onClickBucket(bucketArrayList.get(getAdapterPosition()));
         }
     }
 
     interface AlbumClickListener {
-        void onClick(Bucket bucket);
+        void onClickBucket(Bucket bucket);
     }
 }
