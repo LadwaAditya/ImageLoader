@@ -30,10 +30,12 @@ import timber.log.Timber;
  * Created by aditya on 3/2/17.
  */
 
-public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
+public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, AlbumBucketAdapter.AlbumClickListner {
 
-    @BindView(R.id.album_recycler_view) RecyclerView albumRecyclerView;
-    @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.album_recycler_view)
+    RecyclerView albumRecyclerView;
+    @BindView(R.id.textView)
+    TextView textView;
     private MediaLoader mMediaLoader;
     public static final String IMAGE_TYPE_BMP = "image/bmp";
     public static final String IMAGE_TYPE_JPEG = "image/jpeg";
@@ -69,7 +71,6 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
                 .subscribe(granted -> {
                     if (granted) {
                         Timber.d("Permission Granted");
-
                         mMediaLoader.loadBuckets();
                     } else {
                         Timber.d("Please grant permission");
@@ -101,9 +102,9 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
                 b.setId(id);
                 b.setThumbnailUri(dataStr);
                 bucketArrayList.add(b);
-//                Timber.d(albumName);
-//                Timber.d(String.valueOf(photoCountByAlbum(albumName)));
-//                Timber.d(dataStr);
+                Timber.d(albumName);
+                Timber.d(String.valueOf(photoCountByAlbum(albumName)));
+                Timber.d(dataStr);
             }
             setUpAdapter(bucketArrayList);
         }
@@ -111,7 +112,7 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
 
     private void setUpAdapter(ArrayList<Bucket> bucketArrayList) {
         albumRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        albumBucketAdapter = new AlbumBucketAdapter(bucketArrayList);
+        albumBucketAdapter = new AlbumBucketAdapter(bucketArrayList, this);
         albumRecyclerView.setAdapter(albumBucketAdapter);
     }
 
@@ -144,4 +145,8 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks {
     }
 
 
+    @Override
+    public void onClick(Bucket bucket) {
+        Toast.makeText(getActivity(), bucket.getAlbumName(), Toast.LENGTH_SHORT).show();
+    }
 }

@@ -24,31 +24,38 @@ public class AlbumBucketAdapter extends RecyclerView.Adapter<AlbumBucketAdapter.
 
 
     private ArrayList<Bucket> bucketArrayList;
+    private AlbumClickListner albumClickListner;
 
-    public AlbumBucketAdapter(ArrayList<Bucket> bucketArrayList) {
+    public AlbumBucketAdapter(ArrayList<Bucket> bucketArrayList, AlbumClickListner albumClickListner) {
         this.bucketArrayList = bucketArrayList;
+        this.albumClickListner = albumClickListner;
     }
 
-
-    @Override public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_album_bucket, parent, false);
         return new AlbumViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(AlbumViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(AlbumViewHolder holder, int position) {
         holder.setBucket(bucketArrayList.get(position));
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return bucketArrayList.size() != 0 ? bucketArrayList.size() : 0;
     }
 
-    class AlbumViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.img_thumbnail) ImageView imgThumbnail;
-        @BindView(R.id.txt_album_name) AppCompatTextView txtAlbumName;
-        @BindView(R.id.txt_total_photo) AppCompatTextView txtTotalPhoto;
+    class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.img_thumbnail)
+        ImageView imgThumbnail;
+        @BindView(R.id.txt_album_name)
+        AppCompatTextView txtAlbumName;
+        @BindView(R.id.txt_total_photo)
+        AppCompatTextView txtTotalPhoto;
 
         private void setBucket(Bucket bucket) {
             this.txtAlbumName.setText(bucket.getAlbumName());
@@ -63,7 +70,19 @@ public class AlbumBucketAdapter extends RecyclerView.Adapter<AlbumBucketAdapter.
         public AlbumViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION)
+                albumClickListner.onClick(bucketArrayList.get(getAdapterPosition()));
+        }
+    }
+
+    interface AlbumClickListner {
+        void onClick(Bucket bucket);
     }
 
 

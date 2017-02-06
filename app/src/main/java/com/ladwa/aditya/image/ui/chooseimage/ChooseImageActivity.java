@@ -19,7 +19,6 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
     ViewPager mViewPager;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
