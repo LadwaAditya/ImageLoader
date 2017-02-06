@@ -8,7 +8,7 @@ public class Bucket {
     private String albumName;
     private Integer totalPhoto;
     private String thumbnailUri;
-    private String id;
+    private Long id;
 
     public String getAlbumName() {
         return albumName;
@@ -34,11 +34,11 @@ public class Bucket {
         this.thumbnailUri = thumbnailUri;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

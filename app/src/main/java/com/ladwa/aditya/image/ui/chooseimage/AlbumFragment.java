@@ -95,7 +95,7 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
             while (data.moveToNext()) {
                 Bucket b = new Bucket();
                 String albumName = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
-                String id = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID));
+                Long id = data.getLong(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID));
                 String dataStr = data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
                 b.setAlbumName(albumName);
                 b.setTotalPhoto(photoCountByAlbum(albumName));
@@ -118,7 +118,7 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
 
     @Override
     public void onMediaLoadFinished(@Nullable Cursor data) {
-
+        Timber.d(String.valueOf(data.getCount()));
     }
 
 
@@ -127,7 +127,6 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
             final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
             String searchParams = null;
             searchParams = "bucket_display_name = \"" + bucketName + "\"";
-
 
             Cursor mPhotoCursor = getActivity().getContentResolver().query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null,
@@ -147,6 +146,6 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
 
     @Override
     public void onClick(Bucket bucket) {
-        Toast.makeText(getActivity(), bucket.getAlbumName(), Toast.LENGTH_SHORT).show();
+        mMediaLoader.loadByBucket(bucket.getId());
     }
 }
