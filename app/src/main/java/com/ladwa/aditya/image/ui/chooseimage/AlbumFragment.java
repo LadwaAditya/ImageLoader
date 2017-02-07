@@ -32,7 +32,7 @@ import timber.log.Timber;
  * Created by aditya on 3/2/17.
  */
 
-public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, AlbumBucketAdapter.AlbumClickListener {
+public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, AlbumBucketAdapter.AlbumClickListener, ChooseImageActivity.BackCallback {
 
     @BindView(R.id.album_recycler_view)
     RecyclerView albumRecyclerView;
@@ -47,6 +47,7 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
     private ArrayList<Photo> photoArrayList;
     private AlbumBucketAdapter albumBucketAdapter;
     private PhotoAdapter photoAdapter;
+    private boolean photo = false;
 
     public static Fragment newInstance() {
         return new AlbumFragment();
@@ -61,6 +62,7 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
     public void onAttach(Context context) {
         super.onAttach(context);
         mMediaLoader.onAttach((AppCompatActivity) context, this);
+        ((ChooseImageActivity) getActivity()).setBackCallback(this);
     }
 
     @Nullable
@@ -118,6 +120,8 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
         albumRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         albumBucketAdapter = new AlbumBucketAdapter(bucketArrayList, this);
         albumRecyclerView.setAdapter(albumBucketAdapter);
+        photo = false;
+        ((ChooseImageActivity) getActivity()).setPhotoView(photo);
     }
 
     @Override
@@ -136,6 +140,8 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
             albumRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
             photoAdapter = new PhotoAdapter(photoArrayList);
             albumRecyclerView.setAdapter(photoAdapter);
+            photo = true;
+            ((ChooseImageActivity) getActivity()).setPhotoView(photo);
             Timber.d("Set the data");
         }
     }
@@ -166,5 +172,11 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
     @Override
     public void onClickBucket(Bucket bucket) {
         mMediaLoader.loadByBucket(bucket.getId());
+    }
+
+    @Override
+    public void onBack() {
+        Timber.d("Back");
+        mMediaLoader.loadBuckets();
     }
 }

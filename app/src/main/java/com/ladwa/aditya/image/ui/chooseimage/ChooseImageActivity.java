@@ -26,6 +26,9 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
     private final String TAB_TITLE_TWO = "INSTAGRAM";
     private final String TAB_TITLE_THREE = "FACEBOOK";
 
+    private BackCallback backCallback;
+    private boolean photoView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,22 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (backCallback != null && photoView) {
+            backCallback.onBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void setBackCallback(BackCallback callback) {
+        this.backCallback = callback;
+    }
+
+    public void setPhotoView(boolean photoView) {
+        this.photoView = photoView;
+    }
 
     private class ChooseImagePagerAdapter extends FragmentPagerAdapter {
         private final Integer TOTAL_TABS = 3;
@@ -98,5 +117,10 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
             }
             return super.getPageTitle(position);
         }
+    }
+
+
+    interface BackCallback {
+        void onBack();
     }
 }
