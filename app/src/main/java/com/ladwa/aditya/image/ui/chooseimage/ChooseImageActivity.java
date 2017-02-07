@@ -79,6 +79,12 @@ public class ChooseImageActivity extends BaseActivity implements TabLayout.OnTab
         this.photoView = photoView;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        backCallback = null;
+    }
+
     private class ChooseImagePagerAdapter extends FragmentPagerAdapter {
         private final Integer TOTAL_TABS = 3;
 
