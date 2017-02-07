@@ -1,4 +1,4 @@
-package com.ladwa.aditya.image.ui.chooseimage;
+package com.ladwa.aditya.image.data.model;
 
 /**
  * Created by Aditya on 07-Feb-17.
@@ -6,7 +6,7 @@ package com.ladwa.aditya.image.ui.chooseimage;
 
 public class Photo {
     private Long id;
-    private String albumName;
+    private String displayName;
     private String uri;
 
     public Long getId() {
@@ -17,12 +17,12 @@ public class Photo {
         this.id = id;
     }
 
-    public String getAlbumName() {
-        return albumName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getUri() {

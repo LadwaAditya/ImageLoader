@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.ladwa.aditya.image.R;
+import com.ladwa.aditya.image.data.model.Photo;
 
 import java.util.ArrayList;
 

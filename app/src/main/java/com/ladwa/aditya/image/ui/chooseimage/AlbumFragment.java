@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.ladwa.aditya.image.R;
 import com.ladwa.aditya.image.data.model.Bucket;
+import com.ladwa.aditya.image.data.model.Photo;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
     public static final String IMAGE_TYPE_PNG = "image/png";
     public static final String[] IMAGE_TYPES = {IMAGE_TYPE_BMP, IMAGE_TYPE_JPEG, IMAGE_TYPE_PNG};
     private ArrayList<Bucket> bucketArrayList;
+    private ArrayList<Photo> photoArrayList;
     private AlbumBucketAdapter albumBucketAdapter;
+    private PhotoAdapter photoAdapter;
 
     public static Fragment newInstance() {
         return new AlbumFragment();
@@ -119,8 +122,22 @@ public class AlbumFragment extends Fragment implements MediaLoader.Callbacks, Al
 
     @Override
     public void onMediaLoadFinished(@Nullable Cursor data) {
-        Timber.d(String.valueOf(data.getCount()));
-        albumRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        if (data != null) {
+            photoArrayList = new ArrayList<>();
+            while (data.moveToNext()) {
+                Photo photo = new Photo();
+                photo.setId(data.getLong(data.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID)));
+                photo.setUri(data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.DATA)));
+                photo.setDisplayName(data.getString(data.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME)));
+
+                photoArrayList.add(photo);
+            }
+
+            albumRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+            photoAdapter = new PhotoAdapter(photoArrayList);
+            albumRecyclerView.setAdapter(photoAdapter);
+            Timber.d("Set the data");
+        }
     }
 
 
