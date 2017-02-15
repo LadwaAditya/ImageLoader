@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.ladwa.aditya.image.R;
@@ -15,8 +18,10 @@ import com.ladwa.aditya.image.data.local.PreferencesHelper;
 import com.ladwa.aditya.image.ui.base.BaseFragment;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import butterknife.BindView;
+import rx.Single;
 import timber.log.Timber;
 
 /**
@@ -41,7 +46,7 @@ public class FacebookFragment extends BaseFragment implements FacebookCallback<L
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         fragmentComponent().inject(this);
-        loginButton.setReadPermissions("email","user_photos");
+        loginButton.setReadPermissions("email", "user_photos");
         loginButton.setFragment(this);
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, this);
@@ -62,7 +67,18 @@ public class FacebookFragment extends BaseFragment implements FacebookCallback<L
     @Override
     public void onSuccess(LoginResult loginResult) {
         Timber.d(loginResult.getAccessToken().toString());
-
+        preferencesHelper.setFbtoken(loginResult.getAccessToken().getToken());
+        preferencesHelper.setFbuserid(loginResult.getAccessToken().getUserId());
+        String userId = loginResult.getAccessToken().getUserId();
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + userId + "/albums",
+                null,
+                HttpMethod.GET,
+                response -> {
+                    Timber.d(response.getJSONArray().toString());
+                }
+        ).executeAsync();
 
     }
 

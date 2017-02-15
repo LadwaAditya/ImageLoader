@@ -15,8 +15,6 @@ public class PreferencesHelper {
     public static final String PREF_FILE_NAME = "mvpstarter_pref_file";
 
     private final SharedPreferences mPref;
-    String fbtoken;
-    String fbuserid;
 
 
     @Inject
