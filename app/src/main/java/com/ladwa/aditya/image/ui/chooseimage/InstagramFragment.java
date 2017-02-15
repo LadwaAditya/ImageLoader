@@ -3,9 +3,7 @@ package com.ladwa.aditya.image.ui.chooseimage;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,7 +17,6 @@ import com.ladwa.aditya.image.ui.chooseimage.instagramSignIn.InstagramUser;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
@@ -81,11 +78,4 @@ public class InstagramFragment extends BaseFragment implements InstagramResponse
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 }
