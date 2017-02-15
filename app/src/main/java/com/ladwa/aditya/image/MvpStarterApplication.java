@@ -3,6 +3,7 @@ package com.ladwa.aditya.image;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -22,7 +23,8 @@ public class MvpStarterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
+        FacebookSdk.sdkInitialize(this);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
             Stetho.initializeWithDefaults(this);

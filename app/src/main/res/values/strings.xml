@@ -19,4 +19,7 @@
     <string name="total_photo_format"> %1$d Photos</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sign_in_with_instagram">Sign in with Instagram</string>
+    <string name="facebook_app_id">285296688556317</string>
+    <string name="fb_login_protocol_scheme">fb285296688556317</string>
+
 </resources>
