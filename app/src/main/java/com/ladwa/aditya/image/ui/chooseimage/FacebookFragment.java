@@ -63,12 +63,13 @@ public class FacebookFragment extends BaseFragment implements FacebookCallback<L
     public void onSuccess(LoginResult loginResult) {
         Timber.d(loginResult.getAccessToken().toString());
 
+
     }
 
 
     @Override
     public void onCancel() {
-        Timber.d("Login cancled");
+        Timber.d("Login canceled");
     }
 
     @Override
